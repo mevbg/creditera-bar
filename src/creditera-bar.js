@@ -35,7 +35,7 @@ class CrediteraBar extends HTMLElement {
     
     const yearsDisplay = document.createElement('p')
     yearsDisplay.classList.add('years')
-    yearsDisplay.textContent = `${years} ${years !== 1 ? 'години' : 'година'}`
+    yearsDisplay.textContent = `${years}${years !== 1 ? ' години' : ' година'}`
 
     const style = document.createElement('style')
     style.textContent = `

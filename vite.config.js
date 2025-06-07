@@ -35,8 +35,40 @@ function minifyCSSStrings() {
   };
 }
 
+// Custom plugin to process HTML file and fix script references
+function processHtml() {
+  return {
+    name: 'process-html',
+    generateBundle(options, bundle) {
+      // Read the original index.html
+      const fs = require('fs');
+      const path = require('path');
+      
+      let htmlContent = fs.readFileSync('index.html', 'utf-8');
+      
+      // Replace the development script with production script
+      htmlContent = htmlContent.replace(
+        /<!-- development -->\s*<script type="module" src="\.\/src\/creditera-bar\.js"><\/script>/,
+        ''
+      );
+      
+      htmlContent = htmlContent.replace(
+        /<!-- production -->\s*<!-- <script src="\.\/dist\/creditera-bar\.js"><\/script> -->/,
+        '<!-- production -->\n    <script src="./creditera-bar.js"></script>'
+      );
+      
+      // Add the HTML file to the bundle
+      this.emitFile({
+        type: 'asset',
+        fileName: 'index.html',
+        source: htmlContent
+      });
+    }
+  };
+}
+
 export default {
-  plugins: [minifyCSSStrings()],
+  plugins: [minifyCSSStrings(), processHtml()],
   build: {
     lib: {
       entry: 'src/creditera-bar.js',
