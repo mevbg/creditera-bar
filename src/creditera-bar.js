@@ -50,6 +50,7 @@ class CrediteraBar extends HTMLElement {
         border-radius: 8px;
         font-family: inherit, sans-serif;
         display: inline-flex;
+        flex-wrap: wrap;
         align-items: center;
         gap: 1rem;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
