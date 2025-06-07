@@ -3,9 +3,11 @@ import creditera from './creditera.svg'
 class CrediteraBar extends HTMLElement {
   constructor() {
     super()
-    this.attachShadow({ mode: 'open' })
+    this.#shadowRoot = this.attachShadow({ mode: 'closed' })
     this.render()
   }
+
+  #shadowRoot
 
   render() {
     // Get attributes with defaults
@@ -75,8 +77,8 @@ class CrediteraBar extends HTMLElement {
     `
 
     // Clear shadow root and append new content
-    this.shadowRoot.innerHTML = ''
-    this.shadowRoot.append(style, container)
+    this.#shadowRoot.innerHTML = ''
+    this.#shadowRoot.append(style, container)
     container.append(img, priceInfo)
     priceInfo.append(priceDisplay, yearsDisplay)
   }
@@ -88,7 +90,7 @@ class CrediteraBar extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     // Re-render when attributes change
-    if (oldValue !== newValue && this.shadowRoot) {
+    if (oldValue !== newValue && this.#shadowRoot) {
       this.render()
     }
   }
