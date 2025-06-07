@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Кредитен калкулатор Creditera</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      h1 {
+        margin: 0;
+      }
+
+      body {
+        font-family: 'Raleway', sans-serif;
+        background: #f0f0f0;
+        margin: 0;
+        min-width: 360px;
+        overflow: auto;
+      }
+
+      .layout {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 2rem;
+        gap: 2rem;
+        margin-inline: auto;
+        max-width: 984px;
+      }
+      
+      .config {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      
+      .control-group {
+        max-width: 300px;
+        margin-bottom: 1rem;
+      }
+      
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      
+      input {
+        width: calc(100% - (0.5rem * 2));
+        box-sizing: content-box;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      
+      .preview {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  </head>
+  
+  <body>
+    <div class="layout container">
+      <h1>Кредитен калкулатор Creditera</h1>
+    
+      <div class="preview panel">
+        <creditera-bar id="calculator" price="2000000" />
+      </div>
+      
+      <div class="config panel">
+        <h2>Конфигурация</h2>
+        
+        <div class="control-group">
+          <label for="price-input">Цена (€)</label>
+          <input type="number" id="price-input" value="450000" min="0" step="1000">
+        </div>
+        
+        <div class="control-group">
+          <label for="years-input">Години</label>
+          <input type="number" id="years-input" value="25" min="1" max="30">
+        </div>
+        
+        <div class="control-group">
+          <label for="primary-color-input">Цвят за акцент</label>
+          <input type="color" id="primary-color-input" value="#0066CC">
+        </div>
+        
+        <div class="control-group">
+          <label for="bg-color-input">Цвят за фон</label>
+          <input type="color" id="bg-color-input" value="#F5F5F5">
+        </div>
+      </div>
+    </div>
+
+    <!-- development -->
+    <script type="module" src="./src/creditera-bar.js"></script>
+
+    <!-- production -->
+    <!-- <script src="./dist/creditera-bar.js"></script> -->
+    
+    <script>
+      // Wait for the DOM to be fully loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        const calculator = document.getElementById('calculator');
+        const priceInput = document.getElementById('price-input');
+        const yearsInput = document.getElementById('years-input');
+        const bgColorInput = document.getElementById('bg-color-input');
+        const primaryColorInput = document.getElementById('primary-color-input');
+        
+        // Function to update the calculator
+        function updateCalculator() {
+          calculator.setAttribute('price', priceInput.value);
+          calculator.setAttribute('years', yearsInput.value);
+          calculator.setAttribute('background-color', bgColorInput.value);
+          calculator.setAttribute('primary-color', primaryColorInput.value);
+        }
+        
+        // Add event listeners to all inputs
+        priceInput.addEventListener('input', updateCalculator);
+        yearsInput.addEventListener('input', updateCalculator);
+        bgColorInput.addEventListener('input', updateCalculator);
+        primaryColorInput.addEventListener('input', updateCalculator);
+      });
+    </script>
+  </body>
+</html>

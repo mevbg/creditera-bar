@@ -1,0 +1,12 @@
+{
+  "name": "creditera-bar",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "terser": "^5.41.0",
+    "vite": "^6.3.5"
+  }
+}
