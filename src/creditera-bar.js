@@ -85,7 +85,7 @@ class CrediteraBar extends HTMLElement {
           flex-wrap: wrap;
           align-items: center;
           column-gap: calc(var(--space-base) * 3);
-          row-gap: var(--space-base);
+          row-gap: calc(var(--space-base) * 1.5);
           user-select: none;
           overflow: auto;
         }
@@ -105,7 +105,10 @@ class CrediteraBar extends HTMLElement {
         .monthly-payment-info {
           display: flex;
           align-items: center;
-          gap: var(--space-base);
+          column-gap: var(--space-base);
+          row-gap: calc(var(--space-base) * 1.5);
+          flex-wrap: wrap;
+          height: auto;
         }
 
         .monthly-payment-info span {
