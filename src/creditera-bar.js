@@ -31,7 +31,7 @@ class CrediteraBar extends HTMLElement {
       formattedPrice: `€ ${data.price.toLocaleString('fr-FR')}`,
       yearsText: `${data.years}${data.years !== 1 ? ' години' : ' година'}`,
       logoSrc: creditera,
-      monthlyPayment: Math.round(data.price / currentYears).toLocaleString('fr-FR'),
+      monthlyPayment: Math.round(data.price / (currentYears * 12)).toLocaleString('fr-FR'),
       currentYears: currentYears,
       yearsOptions: Array.from({ length: data.years }, (_, i) => {
         const years = i + 1
