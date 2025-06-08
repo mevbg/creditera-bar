@@ -87,14 +87,13 @@ class CrediteraBar extends HTMLElement {
           flex-wrap: wrap;
           align-items: center;
           column-gap: calc(var(--space-base) * 3);
-          row-gap: calc(var(--space-base) * 1.5);
+          row-gap: calc(var(--space-base) * 2);
           user-select: none;
           overflow: auto;
         }
 
         .root > * {
           display: flex;
-          height: var(--height);
           align-items: center;
         }
 
