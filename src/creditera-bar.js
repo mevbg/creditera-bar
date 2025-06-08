@@ -1,5 +1,7 @@
 import creditera from './creditera.svg'
 
+const LOCALE = 'fr-FR' // bg-BG
+
 class CrediteraBar extends HTMLElement {
   constructor() {
     super()
@@ -28,10 +30,10 @@ class CrediteraBar extends HTMLElement {
     // Use selected years if available, otherwise fall back to data.years
     const currentYears = this.#selectedYears || data.years
     return {
-      formattedPrice: `€ ${data.price.toLocaleString('fr-FR')}`,
+      formattedPrice: `€ ${data.price.toLocaleString(LOCALE)}`,
       yearsText: `${data.years}${data.years !== 1 ? ' години' : ' година'}`,
       logoSrc: creditera,
-      monthlyPayment: Math.round(data.price / (currentYears * 12)).toLocaleString('fr-FR'),
+      monthlyPayment: Math.round(data.price / (currentYears * 12)).toLocaleString(LOCALE),
       currentYears: currentYears,
       yearsOptions: Array.from({ length: data.years }, (_, i) => {
         const years = i + 1
