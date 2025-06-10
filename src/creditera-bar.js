@@ -1,4 +1,4 @@
-import creditera from './creditera.svg'
+import creditera from '../public/creditera.svg'
 
 const LOCALE = 'fr-FR' // bg-BG
 
@@ -136,7 +136,7 @@ class CrediteraBar extends HTMLElement {
 
         .years-select {
           margin: 0;
-          padding: calc(var(--space-base) * 0.5) var(--space-base);
+          padding: calc(var(--space-base) * 0.5) calc(var(--space-base) * 3.5) calc(var(--space-base) * 0.5) calc(var(--space-base) * 1.5);
           font-size: var(--typo-font-size-base);
           font-family: inherit;
           border: 1px solid #ccc;
@@ -144,6 +144,13 @@ class CrediteraBar extends HTMLElement {
           background: white;
           color: var(--color-content-dark);
           cursor: pointer;
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg stroke='%23AA1731' fill='none' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'%3e%3cpolyline points='6,9 12,15 18,9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+          background-repeat: no-repeat;
+          background-position: right calc(var(--space-base) * 0.6) center;
+          background-size: 20px;
         }
 
         .years-select:focus {

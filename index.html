@@ -3,14 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Калкулатор Creditera</title>
+    <title>Creditera Bar</title>
     <style>
       * {
         box-sizing: border-box;
       }
 
+      body {
+        *::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
       h1 {
+        display: inline-flex;
+        align-items: center;
         margin: 0;
+        font-size: 1.8rem;
+        gap: 0.5rem;
+        color: #152f66;
+
+        img {
+          display: inline-block;
+          height: 0.8em;
+        }
       }
 
       body {
@@ -30,17 +46,36 @@
         margin-inline: auto;
         max-width: 1024px;
       }
-      
-      .config {
-        background: white;
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+      .form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-start;
       }
       
       .control-group {
-        max-width: 300px;
+        min-width: 120px;
         margin-bottom: 1rem;
+      }
+
+      @media (min-width: 660px) {
+        .control-group {
+          flex: 1;
+        }
+      }
+
+      @media (max-width: 659px) {
+      
+        .control-group {
+          width: calc(50% - 0.5rem);
+        }
+      }
+
+      @media (max-width: 399px) {
+        .control-group {
+          width: 100%;
+        }
       }
       
       label {
@@ -59,48 +94,77 @@
         font-size: 1rem;
         cursor: pointer;
       }
-      
-      .preview {
+
+      .panel {
         background: white;
         padding: 2rem;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       }
+
+      pre {
+        background: #e6e6e6;
+        padding: 1rem;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 0;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        cursor: pointer;
+        user-select: all;
+      }
+
+      code {
+        font-family: 'Fira Code', monospace;
+      }
     </style>
 
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
   </head>
   
   <body>
     <div class="layout container">
-      <h1>Калкулатор Creditera</h1>
+      <h1><img src="/creditera.svg" alt="Creditera.bg" /> • Bar</h1>
     
-      <div class="preview panel">
+      <div class="panel">
         <creditera-bar id="calculator" price="2000000" />
       </div>
       
-      <div class="config panel">
-        <div class="control-group">
-          <label for="price-input">Цена (€)</label>
-          <input type="number" id="price-input" value="2000000" min="0" step="1000">
+      <div class="panel">
+        <div class="form">
+          <div class="control-group">
+            <label for="price-input">Цена (€)</label>
+            <input type="number" id="price-input" value="2000000" min="0" step="1000">
+          </div>
+          
+          <div class="control-group">
+            <label for="years-input">Години</label>
+            <input type="number" id="years-input" value="30" min="1" max="30">
+          </div>
+          
+          <div class="control-group">
+            <label for="primary-color-input">Акцент</label>
+            <input type="color" id="primary-color-input" value="#00AA33">
+          </div>
+          
+          <div class="control-group">
+            <label for="bg-color-input">Фон</label>
+            <input type="color" id="bg-color-input" value="#E6E6E6">
+          </div>
         </div>
-        
-        <div class="control-group">
-          <label for="years-input">Години</label>
-          <input type="number" id="years-input" value="30" min="1" max="30">
-        </div>
-        
-        <div class="control-group">
-          <label for="primary-color-input">Цвят за акцент</label>
-          <input type="color" id="primary-color-input" value="#00AA33">
-        </div>
-        
-        <div class="control-group">
-          <label for="bg-color-input">Цвят за фон</label>
-          <input type="color" id="bg-color-input" value="#E6E6E6">
-        </div>
+      </div>
+    
+      <div class="panel">
+        <label>Код за усвояване:</label>
+        <p>1. Добави този скрипт в страницата, в която ще се използва калкулатора.</p>
+        <pre id="script-preview"><code id="script-content">&lt;script src=""&gt;&lt;/script&gt;</code></pre>
+
+        <p>2. Постави този генериран код в страницата, там където искаш калкулатора да се появи.</p>
+        <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="2000000"&gt;&lt;/creditera-bar&gt;</code></pre>
       </div>
     </div>
 
@@ -118,13 +182,72 @@
         const yearsInput = document.getElementById('years-input');
         const bgColorInput = document.getElementById('bg-color-input');
         const primaryColorInput = document.getElementById('primary-color-input');
+        const codeContent = document.getElementById('code-content');
+        const codePreview = document.getElementById('code-preview');
+        const scriptContent = document.getElementById('script-content');
+        const scriptPreview = document.getElementById('script-preview');
         
-        // Function to update the calculator
+        // Function to generate the code preview
+        function generateCodePreview() {
+          const attributes = [];
+          
+          // Always include price
+          attributes.push(`price="${priceInput.value}"`);
+          
+          // Add years if different from default (30)
+          if (yearsInput.value !== '30') {
+            attributes.push(`years="${yearsInput.value}"`);
+          }
+          
+          // Add background color if different from default
+          if (bgColorInput.value !== '#e6e6e6') {
+            attributes.push(`background-color="${bgColorInput.value}"`);
+          }
+          
+          // Add primary color if different from default
+          if (primaryColorInput.value !== '#00aa33') {
+            attributes.push(`primary-color="${primaryColorInput.value}"`);
+          }
+          
+          return `&lt;creditera-bar ${attributes.join(' ')}&gt;&lt;/creditera-bar&gt;`;
+        }
+        
+        // Function to update the calculator and code preview
         function updateCalculator() {
           calculator.setAttribute('price', priceInput.value);
           calculator.setAttribute('years', yearsInput.value);
           calculator.setAttribute('background-color', bgColorInput.value);
           calculator.setAttribute('primary-color', primaryColorInput.value);
+          
+          // Update code preview
+          codeContent.innerHTML = generateCodePreview();
+        }
+        
+        // Function to generate the script tag
+        function generateScriptTag() {
+          const hostname = window.location.hostname;
+          const protocol = window.location.protocol;
+          const port = window.location.port ? ':' + window.location.port : '';
+          const scriptPath = `${protocol}//${hostname}${port}/creditera-bar.js`;
+          return `&lt;script src="${scriptPath}"&gt;&lt;/script&gt;`;
+        }
+        
+        // Function to select all code when pre element is clicked
+        function selectAllCode() {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(codeContent);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+        
+        // Function to select all script code when script pre element is clicked
+        function selectAllScript() {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(scriptContent);
+          selection.removeAllRanges();
+          selection.addRange(range);
         }
         
         // Add event listeners to all inputs
@@ -132,6 +255,14 @@
         yearsInput.addEventListener('input', updateCalculator);
         bgColorInput.addEventListener('input', updateCalculator);
         primaryColorInput.addEventListener('input', updateCalculator);
+        
+        // Add click event listeners to code previews
+        codePreview.addEventListener('click', selectAllCode);
+        scriptPreview.addEventListener('click', selectAllScript);
+        
+        // Initialize the code previews
+        scriptContent.innerHTML = generateScriptTag();
+        updateCalculator();
       });
     </script>
   </body>
