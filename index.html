@@ -51,10 +51,13 @@
     
       <div class="panel">
         <label>Код за усвояване:</label>
-        <p>1. Добави този скрипт в страницата, в която ще се използва калкулатора.</p>
+        <p>1. Добави този скрипт в страницата, в която ще се използва бара.</p>
         <pre id="script-preview"><code id="script-content">&lt;script src=""&gt;&lt;/script&gt;</code></pre>
+        
+        <p>Или го свали и го добави локално към проекта, в който ще се използва бара.</p>
+        <pre id="path-preview"><code id="path-content">&lt;script src=""&gt;&lt;/script&gt;</code></pre>
 
-        <p>2. Постави този генериран код в страницата, там където искаш калкулатора да се появи.</p>
+        <p>2. Постави този генериран код в страницата, там където искаш да се появи бара.</p>
         <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="2000000"&gt;&lt;/creditera-bar&gt;</code></pre>
       </div>
     </div>
@@ -77,6 +80,8 @@
         const codePreview = document.getElementById('code-preview');
         const scriptContent = document.getElementById('script-content');
         const scriptPreview = document.getElementById('script-preview');
+        const pathContent = document.getElementById('path-content');
+        const pathPreview = document.getElementById('path-preview');
         
         // Function to get query parameters from URL
         function getQueryParams() {
@@ -188,6 +193,14 @@
           return `&lt;script src="${scriptPath}"&gt;&lt;/script&gt;`;
         }
         
+        // Function to generate the local script path
+        function generateLocalScriptPath() {
+          const hostname = window.location.hostname;
+          const protocol = window.location.protocol;
+          const port = window.location.port ? ':' + window.location.port : '';
+          return `${protocol}//${hostname}${port}/creditera-bar.js`;
+        }
+        
         // Function to select all code when pre element is clicked
         function selectAllCode() {
           const selection = window.getSelection();
@@ -206,6 +219,15 @@
           selection.addRange(range);
         }
         
+        // Function to select all path code when path pre element is clicked
+        function selectAllPath() {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(pathContent);
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+        
         // Prefill inputs from query parameters on page load
         prefillFromQuery();
         
@@ -218,9 +240,11 @@
         // Add click event listeners to code previews
         codePreview.addEventListener('click', selectAllCode);
         scriptPreview.addEventListener('click', selectAllScript);
+        pathPreview.addEventListener('click', selectAllPath);
         
         // Initialize the code previews
         scriptContent.innerHTML = generateScriptTag();
+        pathContent.innerHTML = generateLocalScriptPath();
         updateCalculator();
       });
     </script>
