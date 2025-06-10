@@ -58,6 +58,17 @@ function processHtml() {
         '<!-- production -->\n    <script src="./creditera-bar.js"></script>'
       );
       
+      // Replace the development CSS with production CSS
+      htmlContent = htmlContent.replace(
+        /<!-- development -->\s*<link rel="stylesheet" href="\.\/styles\.css">/,
+        ''
+      );
+      
+      htmlContent = htmlContent.replace(
+        /<!-- production -->\s*<!-- <link rel="stylesheet" href="\.\/styles\.css"> -->/,
+        '<!-- production -->\n    <link rel="stylesheet" href="./styles.css">'
+      );
+      
       // Minify HTML
       const minifiedHtml = await minify(htmlContent, {
         collapseWhitespace: true,
@@ -65,7 +76,7 @@ function processHtml() {
         removeRedundantAttributes: true,
         removeScriptTypeAttributes: true,
         removeStyleLinkTypeAttributes: true,
-        minifyCSS: true,
+        minifyCSS: false, // Disabled to preserve CSS nesting syntax
         minifyJS: true,
         useShortDoctype: true,
         removeEmptyAttributes: true,
@@ -87,8 +98,42 @@ function processHtml() {
   };
 }
 
+// Custom plugin to process CSS file
+function processCss() {
+  return {
+    name: 'process-css',
+    async generateBundle(options, bundle) {
+      const fs = require('fs');
+      const { transform } = require('lightningcss');
+      
+      // Read the CSS file
+      const cssContent = fs.readFileSync('styles.css', 'utf-8');
+      
+      // Transform and minify CSS with Lightning CSS
+      const result = transform({
+        filename: 'styles.css',
+        code: Buffer.from(cssContent),
+        minify: true,
+        targets: {
+          // Support modern browsers that support CSS nesting
+          chrome: 112 << 16,
+          firefox: 117 << 16,
+          safari: 16 << 16 | 5 << 8,
+        }
+      });
+      
+      // Add the minified CSS file to the bundle
+      this.emitFile({
+        type: 'asset',
+        fileName: 'styles.css',
+        source: result.code.toString()
+      });
+    }
+  };
+}
+
 export default {
-  plugins: [minifyCSSStrings(), processHtml()],
+  plugins: [minifyCSSStrings(), processHtml(), processCss()],
   build: {
     lib: {
       entry: 'src/creditera-bar.js',
