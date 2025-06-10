@@ -187,6 +187,68 @@
         const scriptContent = document.getElementById('script-content');
         const scriptPreview = document.getElementById('script-preview');
         
+        // Function to get query parameters from URL
+        function getQueryParams() {
+          const params = new URLSearchParams(window.location.search);
+          return {
+            price: params.get('price'),
+            years: params.get('years'),
+            primaryColor: params.get('primaryColor'),
+            bgColor: params.get('bgColor')
+          };
+        }
+        
+        // Function to update URL with current form values
+        function updateURL() {
+          const params = new URLSearchParams();
+          
+          // Only add parameters if they differ from defaults
+          if (priceInput.value !== '2000000') {
+            params.set('price', priceInput.value);
+          }
+          
+          if (yearsInput.value !== '30') {
+            params.set('years', yearsInput.value);
+          }
+          
+          if (primaryColorInput.value.toLowerCase() !== '#00aa33') {
+            params.set('primaryColor', primaryColorInput.value);
+          }
+          
+          if (bgColorInput.value.toLowerCase() !== '#e6e6e6') {
+            params.set('bgColor', bgColorInput.value);
+          }
+          
+          // Update the URL without reloading the page
+          const newURL = params.toString() ? 
+            `${window.location.pathname}?${params.toString()}` : 
+            window.location.pathname;
+          
+          window.history.replaceState({}, '', newURL);
+        }
+        
+        // Function to prefill inputs from query parameters
+        function prefillFromQuery() {
+          const queryParams = getQueryParams();
+          
+          if (queryParams.price && !isNaN(queryParams.price)) {
+            priceInput.value = queryParams.price;
+          }
+          
+          if (queryParams.years && !isNaN(queryParams.years)) {
+            const years = Math.min(30, Math.max(1, parseInt(queryParams.years)));
+            yearsInput.value = years;
+          }
+          
+          if (queryParams.primaryColor && /^#[0-9A-F]{6}$/i.test(queryParams.primaryColor)) {
+            primaryColorInput.value = queryParams.primaryColor;
+          }
+          
+          if (queryParams.bgColor && /^#[0-9A-F]{6}$/i.test(queryParams.bgColor)) {
+            bgColorInput.value = queryParams.bgColor;
+          }
+        }
+        
         // Function to generate the code preview
         function generateCodePreview() {
           const attributes = [];
@@ -221,6 +283,9 @@
           
           // Update code preview
           codeContent.innerHTML = generateCodePreview();
+          
+          // Update URL with current values
+          updateURL();
         }
         
         // Function to generate the script tag
@@ -249,6 +314,9 @@
           selection.removeAllRanges();
           selection.addRange(range);
         }
+        
+        // Prefill inputs from query parameters on page load
+        prefillFromQuery();
         
         // Add event listeners to all inputs
         priceInput.addEventListener('input', updateCalculator);
