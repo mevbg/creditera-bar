@@ -88,6 +88,10 @@ input {
   cursor: pointer;
 }
 
+input[type="number"] {
+  height: 1.7rem;
+}
+
 .panel {
   background: white;
   padding: 2rem;
