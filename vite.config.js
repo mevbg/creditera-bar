@@ -39,10 +39,11 @@ function minifyCSSStrings() {
 function processHtml() {
   return {
     name: 'process-html',
-    generateBundle(options, bundle) {
+    async generateBundle(options, bundle) {
       // Read the original index.html
       const fs = require('fs');
       const path = require('path');
+      const { minify } = require('html-minifier-terser');
       
       let htmlContent = fs.readFileSync('index.html', 'utf-8');
       
@@ -57,11 +58,30 @@ function processHtml() {
         '<!-- production -->\n    <script src="./creditera-bar.js"></script>'
       );
       
-      // Add the HTML file to the bundle
+      // Minify HTML
+      const minifiedHtml = await minify(htmlContent, {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        minifyCSS: true,
+        minifyJS: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeOptionalTags: false, // Keep optional tags for better compatibility
+        caseSensitive: false,
+        keepClosingSlash: false,
+        quoteCharacter: '"',
+        sortAttributes: true,
+        sortClassName: true
+      });
+      
+      // Add the minified HTML file to the bundle
       this.emitFile({
         type: 'asset',
         fileName: 'index.html',
-        source: htmlContent
+        source: minifiedHtml
       });
     }
   };
