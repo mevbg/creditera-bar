@@ -1,4 +1,4 @@
-import creditera from '../public/creditera.svg'
+import creditera from './creditera.svg'
 
 const LOCALE = 'fr-FR' // bg-BG
 

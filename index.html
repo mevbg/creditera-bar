@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
   
   <body>
@@ -26,6 +27,7 @@
       </div>
       
       <div class="panel">
+        <h2>Конфигурация</h2>
         <div class="form">
           <div class="control-group">
             <label for="price-input">Цена (€)</label>
@@ -73,16 +75,25 @@
       </div>
     
       <div class="panel">
-        <label>Усвояване</label>
-        <p><strong>1.</strong> Към страницата, в която ще се използва бара, трябва да бъде инсталиран скриптът, който разполага с дефиницията му. Това може да стане по един от следните два начина:</p>
-        <p><strong>а)</strong> Усвояване като външен ресурс (подобно на CDN), чрез добавяне на този ред към HTML-а:</p>
-        <pre id="script-preview"><code id="script-content">&lt;script src=""&gt;&lt;/script&gt;</code></pre>
-        
-        <p><strong>б)</strong> Усвояване като локален ресурс, чрез техническа имплементация на самия скриптов файл, който може да бъде свален от този адрес:</p>
-        <pre id="path-preview"><code id="path-content">&lt;script src=""&gt;&lt;/script&gt;</code></pre>
+        <div class="inner">
+          <h2>Скрипт за инсталиране</h2>
+          <p>Свалете скрипт файла за локално използване и го имплементирайте в страницата, където ще използвате бара:</p>
+          <button id="download-script-btn" class="download-btn">creditera-bar.js</button>
+        </div>
+      </div>
+    
+      <div class="panel">
+        <div class="inner">
+          <h2>Код за приложение</h2>
+          <p>Копирайте този код и го поставете в страницата, където искате да се появи бара:</p>
+          <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="200000" redirect-url="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c"&gt;&lt;/creditera-bar&gt;</code></pre>
+        </div>
+      </div>
 
-        <p><strong>2.</strong> След като скриптът с дефиницията е инсталиран на съответното място, визуализирането на бара става чрез поставяне на този генериран код в страницата, там където се очаква да се появи.</p>
-        <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="200000" redirect-url="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c"&gt;&lt;/creditera-bar&gt;</code></pre>
+      <div class="panel">
+        <div class="inner" id="readme-content">
+          <p>Зареждане на документацията...</p>
+        </div>
       </div>
     </div>
 
@@ -93,23 +104,21 @@
     <!-- <script src="./dist/creditera-bar.js"></script> -->
     
     <script>
-      // Wait for the DOM to be fully loaded
-      document.addEventListener('DOMContentLoaded', function() {
-        const calculator = document.getElementById('calculator');
-        const priceInput = document.getElementById('price-input');
-        const maxPeriodInput = document.getElementById('max-period-input');
-        const interestInput = document.getElementById('interest-input');
-        const loanCapInput = document.getElementById('loan-cap-input');
-        const redirectUrlInput = document.getElementById('redirect-url-input');
-        const bgColorInput = document.getElementById('bg-color-input');
-        const primaryColorInput = document.getElementById('primary-color-input');
-        const alignmentInput = document.getElementById('alignment-input');
-        const codeContent = document.getElementById('code-content');
-        const codePreview = document.getElementById('code-preview');
-        const scriptContent = document.getElementById('script-content');
-        const scriptPreview = document.getElementById('script-preview');
-        const pathContent = document.getElementById('path-content');
-        const pathPreview = document.getElementById('path-preview');
+          // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      const calculator = document.getElementById('calculator');
+      const priceInput = document.getElementById('price-input');
+      const maxPeriodInput = document.getElementById('max-period-input');
+      const interestInput = document.getElementById('interest-input');
+      const loanCapInput = document.getElementById('loan-cap-input');
+      const redirectUrlInput = document.getElementById('redirect-url-input');
+      const bgColorInput = document.getElementById('bg-color-input');
+      const primaryColorInput = document.getElementById('primary-color-input');
+      const alignmentInput = document.getElementById('alignment-input');
+      const codeContent = document.getElementById('code-content');
+      const codePreview = document.getElementById('code-preview');
+      const readmeContent = document.getElementById('readme-content');
+      const downloadScriptBtn = document.getElementById('download-script-btn');
         
         // Function to get query parameters from URL
         function getQueryParams() {
@@ -249,7 +258,12 @@
             attributes.push(`alignment="${alignmentInput.value}"`);
           }
           
-          return `&lt;creditera-bar ${attributes.join(' ')}&gt;&lt;/creditera-bar&gt;`;
+          // Format as multi-line with proper indentation
+          if (attributes.length === 0) {
+            return `&lt;creditera-bar&gt;&lt;/creditera-bar&gt;`;
+          }
+          
+          return `&lt;creditera-bar\n  ${attributes.join('\n  ')}\n&gt;&lt;/creditera-bar&gt;`;
         }
         
         // Function to update the calculator and code preview
@@ -314,6 +328,92 @@
           selection.addRange(range);
         }
         
+        // Function to download the script file
+        async function downloadScript() {
+          const possiblePaths = [
+            './creditera-bar.js',        // Root level (when serving from dist)
+            './dist/creditera-bar.js',   // Dist subdirectory
+            './src/creditera-bar.js'     // Development path
+          ];
+          
+          for (let i = 0; i < possiblePaths.length; i++) {
+            const path = possiblePaths[i];
+            console.log(`Trying to fetch script from: ${path}`);
+            
+            try {
+              const response = await fetch(path);
+              if (!response.ok) {
+                console.log(`Path ${path} returned status: ${response.status}`);
+                continue; // Try next path
+              }
+              
+              const contentType = response.headers.get('content-type');
+              console.log(`Found script at ${path}, content-type:`, contentType);
+              
+              const scriptContent = await response.text();
+              
+              // Check if we got HTML instead of JS
+              if (scriptContent.trim().startsWith('<!DOCTYPE') || scriptContent.trim().startsWith('<html')) {
+                console.log(`Path ${path} returned HTML instead of JavaScript`);
+                continue; // Try next path
+              }
+              
+              // Validate that we got JavaScript content
+              if (!scriptContent || scriptContent.length < 10) {
+                console.log(`Path ${path} returned content that's too short`);
+                continue; // Try next path
+              }
+              
+              console.log('Script content preview:', scriptContent.substring(0, 100) + '...');
+              
+              // Create a blob with the script content
+              const blob = new Blob([scriptContent], { type: 'application/javascript' });
+              const url = URL.createObjectURL(blob);
+              
+              // Create a temporary download link
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'creditera-bar.js';
+              document.body.appendChild(a);
+              a.click();
+              
+              // Clean up
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+              
+              console.log('Download initiated successfully!');
+              return; // Success - exit function
+              
+            } catch (error) {
+              console.log(`Error fetching from ${path}:`, error.message);
+              continue; // Try next path
+            }
+          }
+          
+          // If we get here, all paths failed
+          alert('Грешка при сваляне на скрипта: Файлът не може да бъде намерен на нито една от очакваните локации.\n\nОпитайте директно да отворите един от следните URL адреси в браузъра:\n• ./creditera-bar.js\n• ./dist/creditera-bar.js\n• ./src/creditera-bar.js');
+        }
+        
+        // Function to load and parse README.md content
+        async function loadReadmeContent() {
+          try {
+            const response = await fetch('./README.md');
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const markdownText = await response.text();
+            
+            // Parse markdown to HTML using marked.js
+            const htmlContent = marked.parse(markdownText);
+            
+            // Insert the parsed HTML into the readme-content div
+            readmeContent.innerHTML = htmlContent;
+          } catch (error) {
+            console.error('Error loading README.md:', error);
+            readmeContent.innerHTML = '<p>Грешка при зареждане на документацията.</p>';
+          }
+        }
+        
         // Prefill inputs from query parameters on page load
         prefillFromQuery();
         
@@ -329,13 +429,15 @@
         
         // Add click event listeners to code previews
         codePreview.addEventListener('click', selectAllCode);
-        scriptPreview.addEventListener('click', selectAllScript);
-        pathPreview.addEventListener('click', selectAllPath);
         
-        // Initialize the code previews
-        scriptContent.innerHTML = generateScriptTag();
-        pathContent.innerHTML = generateLocalScriptPath();
+        // Add download button event listener
+        downloadScriptBtn.addEventListener('click', downloadScript);
+        
+        // Initialize the code preview
         updateCalculator();
+        
+        // Load and parse README.md content
+        loadReadmeContent();
       });
     </script>
   </body>

@@ -3,6 +3,12 @@
 }
 
 body {
+  font-family: "IBM Plex Sans", sans-serif;
+  background: #f0f0f0;
+  margin: 0;
+  min-width: 360px;
+  overflow: auto;
+
   *::-webkit-scrollbar {
     display: none;
   }
@@ -23,12 +29,72 @@ h1 {
   }
 }
 
-body {
-  font-family: "IBM Plex Sans", sans-serif;
-  background: #f0f0f0;
+h2 {
+  margin-top: 0;
+}
+
+h3, h4 {
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+a {
+  color: #152f66;
+}
+
+code {
+  background-color: #e6e6e6;
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: 'Fira Code', monospace;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+select {
+  color: inherit;
+  background: none;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+select,
+input {
+  width: calc(100% - (0.5rem * 2));
+  box-sizing: content-box;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+input[type="url"] {
+  cursor: text;
+}
+
+select,
+input[type="url"],
+input[type="number"] {
+  height: 1.7rem;
+}
+
+pre {
+  background: #e6e6e6;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
   margin: 0;
-  min-width: 360px;
-  overflow: auto;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  cursor: pointer;
+  user-select: all;
 }
 
 .layout {
@@ -78,42 +144,6 @@ body {
   }
 }
 
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-select {
-  color: inherit;
-  background: none;
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-}
-
-select,
-input {
-  width: calc(100% - (0.5rem * 2));
-  box-sizing: content-box;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-input[type="url"] {
-  cursor: text;
-}
-
-select,
-input[type="url"],
-input[type="number"] {
-  height: 1.7rem;
-}
-
 .panel {
   background: white;
   padding: 2rem;
@@ -121,18 +151,19 @@ input[type="number"] {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-pre {
-  background: #e6e6e6;
-  padding: 1rem;
-  border-radius: 4px;
-  overflow-x: auto;
-  margin: 0;
-  font-size: 0.8rem;
-  line-height: 1.4;
+.download-btn {
+  padding: 10px 20px;
+  background-color: #00AA33;
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  user-select: all;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
-code {
-  font-family: 'Fira Code', monospace;
-} 
+.inner {
+  max-width: 780px;
+}
