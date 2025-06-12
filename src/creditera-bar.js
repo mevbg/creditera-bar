@@ -23,7 +23,9 @@ class CrediteraBar extends HTMLElement {
       loanCapPercent: parseFloat(this.getAttribute('loan-cap-percent')) || 85, // in percent
       price: parseFloat(this.getAttribute('price')),
       annualInterestRate: parseFloat(this.getAttribute('interest')) || 2.19,
+      redirectUrl: this.getAttribute('redirect-url'),
       isValidPrice: this.getAttribute('price') && !isNaN(parseFloat(this.getAttribute('price'))),
+      isValidUrl: this.getAttribute('redirect-url') && this.getAttribute('redirect-url').trim() !== '',
       alignment: alignment === 'center' ? 'center' : 'left' // Validate alignment value
     }
   }
@@ -73,7 +75,7 @@ class CrediteraBar extends HTMLElement {
 
   // Vue-like template method
   template() {
-    const { backgroundColor, primaryColor, alignment, price } = this.data
+    const { backgroundColor, primaryColor, alignment, redirectUrl } = this.data
     const { formattedPrice, logoSrc, monthlyPayment, yearsOptions, currentYears, actualLoanAmount } = this.computed
     
     return `
@@ -209,7 +211,7 @@ class CrediteraBar extends HTMLElement {
               `<option value="${option.value}" ${option.selected ? 'selected' : ''}>${option.label}</option>`
             ).join('')}
           </select>
-          <a class="button" href="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c?years=${currentYears}&amount=${actualLoanAmount}" target="_blank">Заяви</a>
+          <a class="button" href="${redirectUrl}?years=${currentYears}&amount=${actualLoanAmount}" target="_blank">Заяви</a>
         </div>
       </div>
     `
@@ -220,6 +222,10 @@ class CrediteraBar extends HTMLElement {
     // Validate required data
     if (!this.data.isValidPrice) {
       throw new Error('Price attribute is required and must be a valid number')
+    }
+    
+    if (!this.data.isValidUrl) {
+      throw new Error('URL attribute is required and must be a valid URL')
     }
 
     // Clear and render template
@@ -234,7 +240,7 @@ class CrediteraBar extends HTMLElement {
 
   // Observe attribute changes
   static get observedAttributes() {
-    return ['background-color', 'primary-color', 'max-period', 'price', 'alignment', 'interest', 'loan-cap-percent']
+    return ['background-color', 'primary-color', 'max-period', 'price', 'alignment', 'interest', 'loan-cap-percent', 'redirect-url']
   }
 
   // Vue-like reactivity - re-render when dependencies change

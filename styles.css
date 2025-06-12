@@ -104,7 +104,12 @@ input {
   cursor: pointer;
 }
 
+input[type="url"] {
+  cursor: text;
+}
+
 select,
+input[type="url"],
 input[type="number"] {
   height: 1.7rem;
 }

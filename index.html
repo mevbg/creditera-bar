@@ -22,7 +22,7 @@
       <h1><img src="/creditera.svg" alt="Creditera.bg" /> • Bar</h1>
     
       <div class="panel">
-        <creditera-bar id="calculator" price="200000" />
+        <creditera-bar id="calculator" price="200000" redirect-url="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c" />
       </div>
       
       <div class="panel">
@@ -45,6 +45,11 @@
           <div class="control-group">
             <label for="loan-cap-input">Макс. кредит (%)</label>
             <input type="number" id="loan-cap-input" value="85" max="85" step="1">
+          </div>
+          
+          <div class="control-group">
+            <label for="redirect-url-input">Адрес на формуляр</label>
+            <input type="url" id="redirect-url-input" value="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c" required>
           </div>
           
           <div class="control-group">
@@ -77,7 +82,7 @@
         <pre id="path-preview"><code id="path-content">&lt;script src=""&gt;&lt;/script&gt;</code></pre>
 
         <p><strong>2.</strong> След като скриптът с дефиницията е инсталиран на съответното място, визуализирането на бара става чрез поставяне на този генериран код в страницата, там където се очаква да се появи.</p>
-        <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="200000"&gt;&lt;/creditera-bar&gt;</code></pre>
+        <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="200000" redirect-url="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c"&gt;&lt;/creditera-bar&gt;</code></pre>
       </div>
     </div>
 
@@ -95,6 +100,7 @@
         const maxPeriodInput = document.getElementById('max-period-input');
         const interestInput = document.getElementById('interest-input');
         const loanCapInput = document.getElementById('loan-cap-input');
+        const redirectUrlInput = document.getElementById('redirect-url-input');
         const bgColorInput = document.getElementById('bg-color-input');
         const primaryColorInput = document.getElementById('primary-color-input');
         const alignmentInput = document.getElementById('alignment-input');
@@ -113,6 +119,7 @@
             maxPeriod: params.get('maxPeriod'),
             interest: params.get('interest'),
             loanCap: params.get('loanCap'),
+            redirectUrl: params.get('redirectUrl'),
             primaryColor: params.get('primaryColor'),
             bgColor: params.get('bgColor'),
             alignment: params.get('alignment')
@@ -138,6 +145,10 @@
           
           if (loanCapInput.value !== '85') {
             params.set('loanCap', loanCapInput.value);
+          }
+          
+          if (redirectUrlInput.value !== 'https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c') {
+            params.set('redirectUrl', redirectUrlInput.value);
           }
           
           if (primaryColorInput.value.toLowerCase() !== '#00aa33') {
@@ -183,6 +194,10 @@
             loanCapInput.value = loanCap;
           }
           
+          if (queryParams.redirectUrl) {
+            redirectUrlInput.value = queryParams.redirectUrl;
+          }
+          
           if (queryParams.primaryColor && /^#[0-9A-F]{6}$/i.test(queryParams.primaryColor)) {
             primaryColorInput.value = queryParams.primaryColor;
           }
@@ -200,8 +215,9 @@
         function generateCodePreview() {
           const attributes = [];
           
-          // Always include price
+          // Always include price and url (both required)
           attributes.push(`price="${priceInput.value}"`);
+          attributes.push(`redirect-url="${redirectUrlInput.value}"`);
           
           // Add maxPeriod if different from default (30)
           if (maxPeriodInput.value !== '30') {
@@ -242,6 +258,7 @@
           calculator.setAttribute('max-period', maxPeriodInput.value);
           calculator.setAttribute('interest', interestInput.value);
           calculator.setAttribute('loan-cap-percent', loanCapInput.value);
+          calculator.setAttribute('redirect-url', redirectUrlInput.value);
           calculator.setAttribute('background-color', bgColorInput.value);
           calculator.setAttribute('primary-color', primaryColorInput.value);
           calculator.setAttribute('alignment', alignmentInput.value);
@@ -305,6 +322,7 @@
         maxPeriodInput.addEventListener('input', updateCalculator);
         interestInput.addEventListener('input', updateCalculator);
         loanCapInput.addEventListener('input', updateCalculator);
+        redirectUrlInput.addEventListener('input', updateCalculator);
         bgColorInput.addEventListener('input', updateCalculator);
         primaryColorInput.addEventListener('input', updateCalculator);
         alignmentInput.addEventListener('change', updateCalculator);
