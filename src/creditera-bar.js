@@ -21,6 +21,7 @@ class CrediteraBar extends HTMLElement {
       primaryColor: this.getAttribute('primary-color') || '#00AA33',
       years: Math.min(30, Math.max(1, parseInt(this.getAttribute('years')) || 30)),
       price: parseFloat(this.getAttribute('price')),
+      annualInterestRate: parseFloat(this.getAttribute('interest')) || 2.19,
       isValidPrice: this.getAttribute('price') && !isNaN(parseFloat(this.getAttribute('price'))),
       alignment: alignment === 'center' ? 'center' : 'left' // Validate alignment value
     }
@@ -35,7 +36,7 @@ class CrediteraBar extends HTMLElement {
       formattedPrice: `€ ${data.price.toLocaleString(LOCALE)}`,
       yearsText: `${data.years}${data.years !== 1 ? ' години' : ' година'}`,
       logoSrc: creditera,
-      monthlyPayment: Math.round(data.price / (currentYears * 12)).toLocaleString(LOCALE),
+      monthlyPayment: this.#calculateMonthlyPayment({ principal: data.price, annualInterestRate: data.annualInterestRate, loanTermYears: currentYears }).toLocaleString(LOCALE),
       currentYears: currentYears,
       yearsOptions: Array.from({ length: data.years - 3 }, (_, i) => {
         const years = i + 4
@@ -46,6 +47,16 @@ class CrediteraBar extends HTMLElement {
         }
       })
     }
+  }
+
+  #calculateMonthlyPayment = ({ principal, annualInterestRate, loanTermYears }) => {
+    const r = (annualInterestRate / 100) / 12;
+    const n = loanTermYears * 12;
+
+    const monthlyPayment =
+      principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+
+    return Number(monthlyPayment.toFixed(2));
   }
 
   // Handle years selection change
@@ -217,7 +228,7 @@ class CrediteraBar extends HTMLElement {
 
   // Observe attribute changes
   static get observedAttributes() {
-    return ['background-color', 'primary-color', 'years', 'price', 'alignment']
+    return ['background-color', 'primary-color', 'years', 'price', 'alignment', 'interest']
   }
 
   // Vue-like reactivity - re-render when dependencies change

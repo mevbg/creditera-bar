@@ -53,9 +53,16 @@ body {
   margin-bottom: 1rem;
 }
 
-@media (min-width: 660px) {
+@media (min-width: 930px) {
   .control-group {
     flex: 1;
+  }
+}
+
+@media (max-width: 929px) {
+
+  .control-group {
+    width: calc(33.33% - 0.6666rem);
   }
 }
 

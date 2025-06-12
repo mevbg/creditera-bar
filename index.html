@@ -38,13 +38,8 @@
           </div>
           
           <div class="control-group">
-            <label for="primary-color-input">Акцент</label>
-            <input type="color" id="primary-color-input" value="#00AA33">
-          </div>
-          
-          <div class="control-group">
-            <label for="bg-color-input">Фон</label>
-            <input type="color" id="bg-color-input" value="#E6E6E6">
+            <label for="interest-input">Лихва (%)</label>
+            <input type="number" id="interest-input" value="2.19" min="1" max="10" step="0.01">
           </div>
           
           <div class="control-group">
@@ -53,6 +48,16 @@
               <option value="left" selected>Ляво</option>
               <option value="center">Център</option>
             </select>
+          </div>
+          
+          <div class="control-group">
+            <label for="primary-color-input">Акцент</label>
+            <input type="color" id="primary-color-input" value="#00AA33">
+          </div>
+          
+          <div class="control-group">
+            <label for="bg-color-input">Фон</label>
+            <input type="color" id="bg-color-input" value="#E6E6E6">
           </div>
         </div>
       </div>
@@ -83,6 +88,7 @@
         const calculator = document.getElementById('calculator');
         const priceInput = document.getElementById('price-input');
         const yearsInput = document.getElementById('years-input');
+        const interestInput = document.getElementById('interest-input');
         const bgColorInput = document.getElementById('bg-color-input');
         const primaryColorInput = document.getElementById('primary-color-input');
         const alignmentInput = document.getElementById('alignment-input');
@@ -99,6 +105,7 @@
           return {
             price: params.get('price'),
             years: params.get('years'),
+            interest: params.get('interest'),
             primaryColor: params.get('primaryColor'),
             bgColor: params.get('bgColor'),
             alignment: params.get('alignment')
@@ -116,6 +123,10 @@
           
           if (yearsInput.value !== '30') {
             params.set('years', yearsInput.value);
+          }
+          
+          if (interestInput.value !== '2.19') {
+            params.set('interest', interestInput.value);
           }
           
           if (primaryColorInput.value.toLowerCase() !== '#00aa33') {
@@ -151,6 +162,11 @@
             yearsInput.value = years;
           }
           
+          if (queryParams.interest && !isNaN(queryParams.interest)) {
+            const interest = Math.min(10, Math.max(1, parseFloat(queryParams.interest)));
+            interestInput.value = interest;
+          }
+          
           if (queryParams.primaryColor && /^#[0-9A-F]{6}$/i.test(queryParams.primaryColor)) {
             primaryColorInput.value = queryParams.primaryColor;
           }
@@ -176,6 +192,11 @@
             attributes.push(`years="${yearsInput.value}"`);
           }
           
+          // Add interest if different from default (2.19)
+          if (interestInput.value !== '2.19') {
+            attributes.push(`interest="${interestInput.value}"`);
+          }
+          
           // Add background color if different from default
           if (bgColorInput.value !== '#e6e6e6') {
             attributes.push(`background-color="${bgColorInput.value}"`);
@@ -198,6 +219,7 @@
         function updateCalculator() {
           calculator.setAttribute('price', priceInput.value);
           calculator.setAttribute('years', yearsInput.value);
+          calculator.setAttribute('interest', interestInput.value);
           calculator.setAttribute('background-color', bgColorInput.value);
           calculator.setAttribute('primary-color', primaryColorInput.value);
           calculator.setAttribute('alignment', alignmentInput.value);
@@ -259,6 +281,7 @@
         // Add event listeners to all inputs
         priceInput.addEventListener('input', updateCalculator);
         yearsInput.addEventListener('input', updateCalculator);
+        interestInput.addEventListener('input', updateCalculator);
         bgColorInput.addEventListener('input', updateCalculator);
         primaryColorInput.addEventListener('input', updateCalculator);
         alignmentInput.addEventListener('change', updateCalculator);
