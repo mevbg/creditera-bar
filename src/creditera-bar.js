@@ -203,7 +203,7 @@ class CrediteraBar extends HTMLElement {
               `<option value="${option.value}" ${option.selected ? 'selected' : ''}>${option.label}</option>`
             ).join('')}
           </select>
-          <a class="button" href="https://creditera.bg" target="_blank">Заяви</a>
+          <a class="button" href="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c" target="_blank">Заяви</a>
         </div>
       </div>
     `
