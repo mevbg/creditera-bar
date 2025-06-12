@@ -79,6 +79,7 @@ label {
   cursor: pointer;
 }
 
+select,
 input {
   width: calc(100% - (0.5rem * 2));
   box-sizing: content-box;
@@ -89,6 +90,7 @@ input {
   cursor: pointer;
 }
 
+select,
 input[type="number"] {
   height: 1.7rem;
 }

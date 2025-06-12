@@ -15,12 +15,14 @@ class CrediteraBar extends HTMLElement {
 
   // Vue-like data getter - returns reactive data based on attributes
   get data() {
+    const alignment = this.getAttribute('alignment') || 'left'
     return {
       backgroundColor: this.getAttribute('background-color') || '#E6E6E6',
       primaryColor: this.getAttribute('primary-color') || '#00AA33',
       years: Math.min(30, Math.max(1, parseInt(this.getAttribute('years')) || 30)),
       price: parseFloat(this.getAttribute('price')),
-      isValidPrice: this.getAttribute('price') && !isNaN(parseFloat(this.getAttribute('price')))
+      isValidPrice: this.getAttribute('price') && !isNaN(parseFloat(this.getAttribute('price'))),
+      alignment: alignment === 'center' ? 'center' : 'left' // Validate alignment value
     }
   }
 
@@ -54,7 +56,7 @@ class CrediteraBar extends HTMLElement {
 
   // Vue-like template method
   template() {
-    const { backgroundColor, primaryColor } = this.data
+    const { backgroundColor, primaryColor, alignment } = this.data
     const { formattedPrice, logoSrc, monthlyPayment, yearsOptions } = this.computed
     
     return `
@@ -86,6 +88,7 @@ class CrediteraBar extends HTMLElement {
           display: flex;
           flex-wrap: wrap;
           align-items: center;
+          justify-content: ${alignment === 'center' ? 'center' : 'flex-start'};
           column-gap: calc(var(--space-base) * 3);
           row-gap: calc(var(--space-base) * 2);
           user-select: none;
@@ -106,6 +109,7 @@ class CrediteraBar extends HTMLElement {
         .monthly-payment-info {
           display: flex;
           align-items: center;
+          justify-content: ${alignment === 'center' ? 'center' : 'flex-start'};
           column-gap: var(--space-base);
           row-gap: calc(var(--space-base) * 1.5);
           flex-wrap: wrap;
@@ -213,7 +217,7 @@ class CrediteraBar extends HTMLElement {
 
   // Observe attribute changes
   static get observedAttributes() {
-    return ['background-color', 'primary-color', 'years', 'price']
+    return ['background-color', 'primary-color', 'years', 'price', 'alignment']
   }
 
   // Vue-like reactivity - re-render when dependencies change

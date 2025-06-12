@@ -46,6 +46,14 @@
             <label for="bg-color-input">Фон</label>
             <input type="color" id="bg-color-input" value="#E6E6E6">
           </div>
+          
+          <div class="control-group">
+            <label for="alignment-input">Подравняване</label>
+            <select id="alignment-input">
+              <option value="left" selected>Ляво</option>
+              <option value="center">Център</option>
+            </select>
+          </div>
         </div>
       </div>
     
@@ -77,6 +85,7 @@
         const yearsInput = document.getElementById('years-input');
         const bgColorInput = document.getElementById('bg-color-input');
         const primaryColorInput = document.getElementById('primary-color-input');
+        const alignmentInput = document.getElementById('alignment-input');
         const codeContent = document.getElementById('code-content');
         const codePreview = document.getElementById('code-preview');
         const scriptContent = document.getElementById('script-content');
@@ -91,7 +100,8 @@
             price: params.get('price'),
             years: params.get('years'),
             primaryColor: params.get('primaryColor'),
-            bgColor: params.get('bgColor')
+            bgColor: params.get('bgColor'),
+            alignment: params.get('alignment')
           };
         }
         
@@ -114,6 +124,10 @@
           
           if (bgColorInput.value.toLowerCase() !== '#e6e6e6') {
             params.set('bgColor', bgColorInput.value);
+          }
+          
+          if (alignmentInput.value !== 'left') {
+            params.set('alignment', alignmentInput.value);
           }
           
           // Update the URL without reloading the page
@@ -144,6 +158,10 @@
           if (queryParams.bgColor && /^#[0-9A-F]{6}$/i.test(queryParams.bgColor)) {
             bgColorInput.value = queryParams.bgColor;
           }
+          
+          if (queryParams.alignment && (queryParams.alignment === 'left' || queryParams.alignment === 'center')) {
+            alignmentInput.value = queryParams.alignment;
+          }
         }
         
         // Function to generate the code preview
@@ -168,6 +186,11 @@
             attributes.push(`primary-color="${primaryColorInput.value}"`);
           }
           
+          // Add alignment if different from default
+          if (alignmentInput.value !== 'left') {
+            attributes.push(`alignment="${alignmentInput.value}"`);
+          }
+          
           return `&lt;creditera-bar ${attributes.join(' ')}&gt;&lt;/creditera-bar&gt;`;
         }
         
@@ -177,6 +200,7 @@
           calculator.setAttribute('years', yearsInput.value);
           calculator.setAttribute('background-color', bgColorInput.value);
           calculator.setAttribute('primary-color', primaryColorInput.value);
+          calculator.setAttribute('alignment', alignmentInput.value);
           
           // Update code preview
           codeContent.innerHTML = generateCodePreview();
@@ -237,6 +261,7 @@
         yearsInput.addEventListener('input', updateCalculator);
         bgColorInput.addEventListener('input', updateCalculator);
         primaryColorInput.addEventListener('input', updateCalculator);
+        alignmentInput.addEventListener('change', updateCalculator);
         
         // Add click event listeners to code previews
         codePreview.addEventListener('click', selectAllCode);
