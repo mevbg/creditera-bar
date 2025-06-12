@@ -168,6 +168,7 @@ pre {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  letter-spacing: 0.05em;
 }
 
 .inner {
