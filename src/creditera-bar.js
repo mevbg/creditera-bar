@@ -19,7 +19,8 @@ class CrediteraBar extends HTMLElement {
     return {
       backgroundColor: this.getAttribute('background-color') || '#E6E6E6',
       primaryColor: this.getAttribute('primary-color') || '#00AA33',
-      years: Math.min(30, Math.max(1, parseInt(this.getAttribute('years')) || 30)),
+      maxPeriod: Math.min(30, Math.max(1, parseInt(this.getAttribute('max-period')) || 30)), // in years
+      loanCapPercent: parseFloat(this.getAttribute('loan-cap-percent')) || 85, // in percent
       price: parseFloat(this.getAttribute('price')),
       annualInterestRate: parseFloat(this.getAttribute('interest')) || 2.19,
       isValidPrice: this.getAttribute('price') && !isNaN(parseFloat(this.getAttribute('price'))),
@@ -31,14 +32,16 @@ class CrediteraBar extends HTMLElement {
   get computed() {
     const data = this.data
     // Use selected years if available, otherwise fall back to data.years
-    const currentYears = this.#selectedYears || data.years
+    const currentYears = this.#selectedYears || data.maxPeriod
+    const actualLoanAmount = data.price * (data.loanCapPercent / 100)
     return {
       formattedPrice: `€ ${data.price.toLocaleString(LOCALE)}`,
-      yearsText: `${data.years}${data.years !== 1 ? ' години' : ' година'}`,
+      yearsText: `${data.maxPeriod}${data.maxPeriod !== 1 ? ' години' : ' година'}`,
       logoSrc: creditera,
-      monthlyPayment: this.#calculateMonthlyPayment({ principal: data.price, annualInterestRate: data.annualInterestRate, loanTermYears: currentYears }).toLocaleString(LOCALE),
+      monthlyPayment: this.#calculateMonthlyPayment({ principal: data.price, annualInterestRate: data.annualInterestRate, loanTermYears: currentYears, loanCapPercent: data.loanCapPercent }).toLocaleString(LOCALE),
+      actualLoanAmount: actualLoanAmount,
       currentYears: currentYears,
-      yearsOptions: Array.from({ length: data.years - 3 }, (_, i) => {
+      yearsOptions: Array.from({ length: data.maxPeriod - 3 }, (_, i) => {
         const years = i + 4
         return {
           value: years,
@@ -49,12 +52,15 @@ class CrediteraBar extends HTMLElement {
     }
   }
 
-  #calculateMonthlyPayment = ({ principal, annualInterestRate, loanTermYears }) => {
+  #calculateMonthlyPayment = ({ principal, annualInterestRate, loanTermYears, loanCapPercent }) => {
+    // Apply loan cap percentage to the principal amount
+    const actualLoanAmount = principal * (loanCapPercent / 100);
+    
     const r = (annualInterestRate / 100) / 12;
     const n = loanTermYears * 12;
 
     const monthlyPayment =
-      principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+      actualLoanAmount * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
 
     return Number(monthlyPayment.toFixed(2));
   }
@@ -68,7 +74,7 @@ class CrediteraBar extends HTMLElement {
   // Vue-like template method
   template() {
     const { backgroundColor, primaryColor, alignment, price } = this.data
-    const { formattedPrice, logoSrc, monthlyPayment, yearsOptions, currentYears } = this.computed
+    const { formattedPrice, logoSrc, monthlyPayment, yearsOptions, currentYears, actualLoanAmount } = this.computed
     
     return `
       <style>
@@ -203,7 +209,7 @@ class CrediteraBar extends HTMLElement {
               `<option value="${option.value}" ${option.selected ? 'selected' : ''}>${option.label}</option>`
             ).join('')}
           </select>
-          <a class="button" href="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c?years=${currentYears}&amount=${price}" target="_blank">Заяви</a>
+          <a class="button" href="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c?years=${currentYears}&amount=${actualLoanAmount}" target="_blank">Заяви</a>
         </div>
       </div>
     `
@@ -228,7 +234,7 @@ class CrediteraBar extends HTMLElement {
 
   // Observe attribute changes
   static get observedAttributes() {
-    return ['background-color', 'primary-color', 'years', 'price', 'alignment', 'interest']
+    return ['background-color', 'primary-color', 'max-period', 'price', 'alignment', 'interest', 'loan-cap-percent']
   }
 
   // Vue-like reactivity - re-render when dependencies change

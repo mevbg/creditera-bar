@@ -22,24 +22,29 @@
       <h1><img src="/creditera.svg" alt="Creditera.bg" /> • Bar</h1>
     
       <div class="panel">
-        <creditera-bar id="calculator" price="2000000" />
+        <creditera-bar id="calculator" price="200000" />
       </div>
       
       <div class="panel">
         <div class="form">
           <div class="control-group">
             <label for="price-input">Цена (€)</label>
-            <input type="number" id="price-input" value="2000000" min="1000" step="1000">
+            <input type="number" id="price-input" value="200000" min="1000" step="1000">
           </div>
           
           <div class="control-group">
-            <label for="years-input">Години</label>
-            <input type="number" id="years-input" value="30" min="4" max="30">
+            <label for="max-period-input">Макс. период (год.)</label>
+            <input type="number" id="max-period-input" value="30" min="4" max="30">
           </div>
           
           <div class="control-group">
             <label for="interest-input">Лихва (%)</label>
             <input type="number" id="interest-input" value="2.19" min="1" max="10" step="0.01">
+          </div>
+          
+          <div class="control-group">
+            <label for="loan-cap-input">Макс. кредит (%)</label>
+            <input type="number" id="loan-cap-input" value="85" max="85" step="1">
           </div>
           
           <div class="control-group">
@@ -72,7 +77,7 @@
         <pre id="path-preview"><code id="path-content">&lt;script src=""&gt;&lt;/script&gt;</code></pre>
 
         <p><strong>2.</strong> След като скриптът с дефиницията е инсталиран на съответното място, визуализирането на бара става чрез поставяне на този генериран код в страницата, там където се очаква да се появи.</p>
-        <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="2000000"&gt;&lt;/creditera-bar&gt;</code></pre>
+        <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="200000"&gt;&lt;/creditera-bar&gt;</code></pre>
       </div>
     </div>
 
@@ -87,8 +92,9 @@
       document.addEventListener('DOMContentLoaded', function() {
         const calculator = document.getElementById('calculator');
         const priceInput = document.getElementById('price-input');
-        const yearsInput = document.getElementById('years-input');
+        const maxPeriodInput = document.getElementById('max-period-input');
         const interestInput = document.getElementById('interest-input');
+        const loanCapInput = document.getElementById('loan-cap-input');
         const bgColorInput = document.getElementById('bg-color-input');
         const primaryColorInput = document.getElementById('primary-color-input');
         const alignmentInput = document.getElementById('alignment-input');
@@ -104,8 +110,9 @@
           const params = new URLSearchParams(window.location.search);
           return {
             price: params.get('price'),
-            years: params.get('years'),
+            maxPeriod: params.get('maxPeriod'),
             interest: params.get('interest'),
+            loanCap: params.get('loanCap'),
             primaryColor: params.get('primaryColor'),
             bgColor: params.get('bgColor'),
             alignment: params.get('alignment')
@@ -117,16 +124,20 @@
           const params = new URLSearchParams();
           
           // Only add parameters if they differ from defaults
-          if (priceInput.value !== '2000000') {
+          if (priceInput.value !== '200000') {
             params.set('price', priceInput.value);
           }
           
-          if (yearsInput.value !== '30') {
-            params.set('years', yearsInput.value);
+          if (maxPeriodInput.value !== '30') {
+            params.set('maxPeriod', maxPeriodInput.value);
           }
           
           if (interestInput.value !== '2.19') {
             params.set('interest', interestInput.value);
+          }
+          
+          if (loanCapInput.value !== '85') {
+            params.set('loanCap', loanCapInput.value);
           }
           
           if (primaryColorInput.value.toLowerCase() !== '#00aa33') {
@@ -157,14 +168,19 @@
             priceInput.value = queryParams.price;
           }
           
-          if (queryParams.years && !isNaN(queryParams.years)) {
-            const years = Math.min(30, Math.max(1, parseInt(queryParams.years)));
-            yearsInput.value = years;
+          if (queryParams.maxPeriod && !isNaN(queryParams.maxPeriod)) {
+            const maxPeriod = Math.min(30, Math.max(1, parseInt(queryParams.maxPeriod)));
+            maxPeriodInput.value = maxPeriod;
           }
           
           if (queryParams.interest && !isNaN(queryParams.interest)) {
             const interest = Math.min(10, Math.max(1, parseFloat(queryParams.interest)));
             interestInput.value = interest;
+          }
+          
+          if (queryParams.loanCap && !isNaN(queryParams.loanCap)) {
+            const loanCap = Math.min(85, Math.max(1, parseInt(queryParams.loanCap)));
+            loanCapInput.value = loanCap;
           }
           
           if (queryParams.primaryColor && /^#[0-9A-F]{6}$/i.test(queryParams.primaryColor)) {
@@ -187,14 +203,19 @@
           // Always include price
           attributes.push(`price="${priceInput.value}"`);
           
-          // Add years if different from default (30)
-          if (yearsInput.value !== '30') {
-            attributes.push(`years="${yearsInput.value}"`);
+          // Add maxPeriod if different from default (30)
+          if (maxPeriodInput.value !== '30') {
+            attributes.push(`max-period="${maxPeriodInput.value}"`);
           }
           
           // Add interest if different from default (2.19)
           if (interestInput.value !== '2.19') {
             attributes.push(`interest="${interestInput.value}"`);
+          }
+          
+          // Add loan cap if different from default (85)
+          if (loanCapInput.value !== '85') {
+            attributes.push(`loan-cap-percent="${loanCapInput.value}"`);
           }
           
           // Add background color if different from default
@@ -218,8 +239,9 @@
         // Function to update the calculator and code preview
         function updateCalculator() {
           calculator.setAttribute('price', priceInput.value);
-          calculator.setAttribute('years', yearsInput.value);
+          calculator.setAttribute('max-period', maxPeriodInput.value);
           calculator.setAttribute('interest', interestInput.value);
+          calculator.setAttribute('loan-cap-percent', loanCapInput.value);
           calculator.setAttribute('background-color', bgColorInput.value);
           calculator.setAttribute('primary-color', primaryColorInput.value);
           calculator.setAttribute('alignment', alignmentInput.value);
@@ -280,8 +302,9 @@
         
         // Add event listeners to all inputs
         priceInput.addEventListener('input', updateCalculator);
-        yearsInput.addEventListener('input', updateCalculator);
+        maxPeriodInput.addEventListener('input', updateCalculator);
         interestInput.addEventListener('input', updateCalculator);
+        loanCapInput.addEventListener('input', updateCalculator);
         bgColorInput.addEventListener('input', updateCalculator);
         primaryColorInput.addEventListener('input', updateCalculator);
         alignmentInput.addEventListener('change', updateCalculator);
