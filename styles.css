@@ -58,7 +58,7 @@ label {
 
 select {
   color: inherit;
-  background: none;
+  background: white;
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -77,6 +77,10 @@ input {
 
 input[type="url"] {
   cursor: text;
+}
+
+input[type="color"] {
+  background-color: #fff;
 }
 
 select,
@@ -112,6 +116,9 @@ pre {
   flex-wrap: wrap;
   gap: 1rem;
   align-items: flex-start;
+  background-color: #e6e6e6;
+  padding: 2rem;
+  border-radius: 4px;
 }
 
 .control-group {
@@ -131,14 +138,13 @@ pre {
   }
 }
 
-@media (max-width: 659px) {
-
+@media (max-width: 699px) {
   .control-group {
     width: calc(50% - 0.5rem);
   }
 }
 
-@media (max-width: 449px) {
+@media (max-width: 519px) {
   .control-group {
     width: 100%;
   }
@@ -152,11 +158,11 @@ pre {
 }
 
 .download-btn {
-  padding: 10px 20px;
+  padding: 12px 24px;
   background-color: #00AA33;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 19px;
   cursor: pointer;
   font-size: 14px;
   display: inline-flex;

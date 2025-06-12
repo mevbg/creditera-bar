@@ -27,64 +27,63 @@
       </div>
       
       <div class="panel">
-        <h2>Конфигурация</h2>
-        <div class="form">
-          <div class="control-group">
-            <label for="price-input">Цена (€)</label>
-            <input type="number" id="price-input" value="200000" min="1000" step="1000">
-          </div>
-          
-          <div class="control-group">
-            <label for="max-period-input">Макс. период (год.)</label>
-            <input type="number" id="max-period-input" value="30" min="4" max="30">
-          </div>
-          
-          <div class="control-group">
-            <label for="interest-input">Лихва (%)</label>
-            <input type="number" id="interest-input" value="2.19" min="1" max="10" step="0.01">
-          </div>
-          
-          <div class="control-group">
-            <label for="loan-cap-input">Макс. кредит (%)</label>
-            <input type="number" id="loan-cap-input" value="85" max="85" step="1">
-          </div>
-          
-          <div class="control-group">
-            <label for="redirect-url-input">Адрес на формуляр</label>
-            <input type="url" id="redirect-url-input" value="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c" required>
-          </div>
-          
-          <div class="control-group">
-            <label for="alignment-input">Подравняване</label>
-            <select id="alignment-input">
-              <option value="left" selected>Ляво</option>
-              <option value="center">Център</option>
-            </select>
-          </div>
-          
-          <div class="control-group">
-            <label for="primary-color-input">Акцент</label>
-            <input type="color" id="primary-color-input" value="#00AA33">
-          </div>
-          
-          <div class="control-group">
-            <label for="bg-color-input">Фон</label>
-            <input type="color" id="bg-color-input" value="#E6E6E6">
-          </div>
-        </div>
-      </div>
-    
-      <div class="panel">
         <div class="inner">
-          <h2>Скрипт за инсталиране</h2>
+          <h2>1. Инсталиране</h2>
           <p>Свалете скрипт файла за локално използване и го имплементирайте в страницата, където ще използвате бара:</p>
           <button id="download-script-btn" class="download-btn">creditera-bar.js</button>
         </div>
-      </div>
-    
-      <div class="panel">
+        
+        <div>
+          <h2 style="margin-top: 2em">2. Конфигуриране</h2>
+          <p>Настройте параметрите на бара от тук, в случай че искате да го използвате статично:</p>
+          <div class="form">
+            <div class="control-group">
+              <label for="price-input">Цена на имот (€)</label>
+              <input type="number" id="price-input" value="200000" min="1000" step="1000">
+            </div>
+            
+            <div class="control-group">
+              <label for="max-period-input">Макс. период (год.)</label>
+              <input type="number" id="max-period-input" value="30" min="4" max="30">
+            </div>
+            
+            <div class="control-group">
+              <label for="interest-input">Лихва (%)</label>
+              <input type="number" id="interest-input" value="2.19" min="1" max="10" step="0.01">
+            </div>
+            
+            <div class="control-group">
+              <label for="loan-cap-input">Макс. кредит (%)</label>
+              <input type="number" id="loan-cap-input" value="85" max="85" step="1">
+            </div>
+            
+            <div class="control-group">
+              <label for="redirect-url-input">Адрес на формуляр</label>
+              <input type="url" id="redirect-url-input" value="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c" required>
+            </div>
+            
+            <div class="control-group">
+              <label for="alignment-input">Подравняване</label>
+              <select id="alignment-input">
+                <option value="left" selected>Ляво</option>
+                <option value="center">Център</option>
+              </select>
+            </div>
+            
+            <div class="control-group">
+              <label for="primary-color-input">Акцент</label>
+              <input type="color" id="primary-color-input" value="#00AA33">
+            </div>
+            
+            <div class="control-group">
+              <label for="bg-color-input">Фон</label>
+              <input type="color" id="bg-color-input" value="#E6E6E6">
+            </div>
+          </div>
+        </div>
+
         <div class="inner">
-          <h2>Код за приложение</h2>
+          <h2 style="margin-top: 2em">3. Резултат</h2>
           <p>Копирайте този код и го поставете в страницата, където искате да се появи бара:</p>
           <pre id="code-preview"><code id="code-content">&lt;creditera-bar price="200000" redirect-url="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c"&gt;&lt;/creditera-bar&gt;</code></pre>
         </div>
