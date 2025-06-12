@@ -67,8 +67,8 @@ class CrediteraBar extends HTMLElement {
 
   // Vue-like template method
   template() {
-    const { backgroundColor, primaryColor, alignment } = this.data
-    const { formattedPrice, logoSrc, monthlyPayment, yearsOptions } = this.computed
+    const { backgroundColor, primaryColor, alignment, price } = this.data
+    const { formattedPrice, logoSrc, monthlyPayment, yearsOptions, currentYears } = this.computed
     
     return `
       <style>
@@ -203,7 +203,7 @@ class CrediteraBar extends HTMLElement {
               `<option value="${option.value}" ${option.selected ? 'selected' : ''}>${option.label}</option>`
             ).join('')}
           </select>
-          <a class="button" href="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c" target="_blank">Заяви</a>
+          <a class="button" href="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c?years=${currentYears}&amount=${price}" target="_blank">Заяви</a>
         </div>
       </div>
     `
