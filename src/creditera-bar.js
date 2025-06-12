@@ -35,8 +35,8 @@ class CrediteraBar extends HTMLElement {
       logoSrc: creditera,
       monthlyPayment: Math.round(data.price / (currentYears * 12)).toLocaleString(LOCALE),
       currentYears: currentYears,
-      yearsOptions: Array.from({ length: data.years }, (_, i) => {
-        const years = i + 1
+      yearsOptions: Array.from({ length: data.years - 3 }, (_, i) => {
+        const years = i + 4
         return {
           value: years,
           label: `${years} год`,
