@@ -407,10 +407,10 @@
             const htmlContent = marked.parse(markdownText);
             
             // Insert the parsed HTML into the readme-content div
-            readmeContent.innerHTML = htmlContent;
+            readmeContent.innerHTML = `<div class="inner">${htmlContent}</div>`;
           } catch (error) {
             console.error('Error loading README.md:', error);
-            readmeContent.innerHTML = '<p>Грешка при зареждане на документацията.</p>';
+            readmeContent.innerHTML = '<div class="inner"><p>Грешка при зареждане на документацията.</p></div>';
           }
         }
         

@@ -69,8 +69,8 @@ class CrediteraBar extends HTMLElement {
 
   // Handle years selection change
   #handleYearsChange = (event) => {
-    this.#selectedYears = parseInt(event.target.value)
-    this.render()
+    this.#selectedYears = parseInt(event.target.value);
+    this.render();
   }
 
   // Vue-like template method

@@ -132,8 +132,34 @@ function processCss() {
   };
 }
 
+// Custom plugin to copy README.md file
+function copyReadme() {
+  return {
+    name: 'copy-readme',
+    async generateBundle(options, bundle) {
+      const fs = require('fs');
+      
+      try {
+        // Read the README.md file
+        const readmeContent = fs.readFileSync('README.md', 'utf-8');
+        
+        // Add the README.md file to the bundle
+        this.emitFile({
+          type: 'asset',
+          fileName: 'README.md',
+          source: readmeContent
+        });
+        
+        console.log('✓ README.md copied to dist directory');
+      } catch (error) {
+        console.warn('⚠ Could not copy README.md:', error.message);
+      }
+    }
+  };
+}
+
 export default {
-  plugins: [minifyCSSStrings(), processHtml(), processCss()],
+  plugins: [minifyCSSStrings(), processHtml(), processCss(), copyReadme()],
   build: {
     lib: {
       entry: 'src/creditera-bar.js',
