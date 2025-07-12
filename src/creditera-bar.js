@@ -11,8 +11,10 @@ class CrediteraBar extends HTMLElement {
 
   #shadowRoot
   #selectedYears
+  #connected = false;
 
   connectedCallback() {
+    this.#connected = true;
     this.render();
   }
 
@@ -248,6 +250,8 @@ class CrediteraBar extends HTMLElement {
 
   // Vue-like reactivity - re-render when dependencies change
   attributeChangedCallback(name, oldValue, newValue) {
+     if (!this.#connected) { return; }
+
     if (oldValue !== newValue && this.#shadowRoot) {
       // Reset selected years when years attribute changes
       if (name === 'years') {
