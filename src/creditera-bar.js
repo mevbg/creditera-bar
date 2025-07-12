@@ -7,11 +7,14 @@ class CrediteraBar extends HTMLElement {
     super()
     this.#shadowRoot = this.attachShadow({ mode: 'closed' })
     this.#selectedYears = null // Internal state for selected years
-    this.render()
   }
 
   #shadowRoot
   #selectedYears
+
+  connectedCallback() {
+    this.render();
+  }
 
   // Vue-like data getter - returns reactive data based on attributes
   get data() {
