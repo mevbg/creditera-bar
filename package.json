@@ -1,7 +1,7 @@
 {
   "name": "@mevbg/creditera-bar",
   "title": "Creditera Bar",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Web component representing an interactive bar for calculating monthly loan payments.",
   "keywords": [
     "creditera bar",
