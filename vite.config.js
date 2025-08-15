@@ -1,3 +1,8 @@
+import fs from 'fs';
+import path from 'path';
+import { minify } from 'html-minifier-terser';
+import { transform } from 'lightningcss';
+
 // Custom plugin to minify CSS strings in JavaScript
 function minifyCSSStrings() {
   return {
@@ -41,9 +46,6 @@ function processHtml() {
     name: 'process-html',
     async generateBundle(options, bundle) {
       // Read the original index.html
-      const fs = require('fs');
-      const path = require('path');
-      const { minify } = require('html-minifier-terser');
       
       let htmlContent = fs.readFileSync('index.html', 'utf-8');
       
@@ -103,9 +105,6 @@ function processCss() {
   return {
     name: 'process-css',
     async generateBundle(options, bundle) {
-      const fs = require('fs');
-      const { transform } = require('lightningcss');
-      
       // Read the CSS file
       const cssContent = fs.readFileSync('styles.css', 'utf-8');
       
@@ -137,8 +136,6 @@ function copyReadme() {
   return {
     name: 'copy-readme',
     async generateBundle(options, bundle) {
-      const fs = require('fs');
-      
       try {
         // Read the DOCUMENTATION.md file
         const readmeContent = fs.readFileSync('DOCUMENTATION.md', 'utf-8');
