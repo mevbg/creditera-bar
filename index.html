@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Creditera Bar</title>
-    <!-- development -->
-    <link rel="stylesheet" href="./styles.css">
     
-    <!-- production -->
-    <!-- <link rel="stylesheet" href="./styles.css"> -->
+    <link rel="stylesheet" href="./styles.css">
 
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -393,10 +390,10 @@
           alert('Грешка при сваляне на скрипта: Файлът не може да бъде намерен на нито една от очакваните локации.\n\nОпитайте директно да отворите един от следните URL адреси в браузъра:\n• ./creditera-bar.js\n• ./dist/creditera-bar.js\n• ./src/creditera-bar.js');
         }
         
-        // Function to load and parse README.md content
-        async function loadReadmeContent() {
+        // Function to load and parse DOCUMENTATION.md content
+        async function loadDocumentationContent() {
           try {
-            const response = await fetch('./README.md');
+            const response = await fetch('./DOCUMENTATION.md');
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -408,7 +405,7 @@
             // Insert the parsed HTML into the readme-content div
             readmeContent.innerHTML = `<div class="inner">${htmlContent}</div>`;
           } catch (error) {
-            console.error('Error loading README.md:', error);
+            console.error('Error loading DOCUMENTATION.md:', error);
             readmeContent.innerHTML = '<div class="inner"><p>Грешка при зареждане на документацията.</p></div>';
           }
         }
@@ -435,8 +432,8 @@
         // Initialize the code preview
         updateCalculator();
         
-        // Load and parse README.md content
-        loadReadmeContent();
+        // Load and parse DOCUMENTATION.md content
+        loadDocumentationContent();
       });
     </script>
   </body>

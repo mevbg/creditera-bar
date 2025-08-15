@@ -1,21 +1,52 @@
-## Документация
+# Creditera Bar
 
-### Общо описание
+> Web component representing an interactive bar for calculating monthly loan payments
 
-`creditera-bar` е [**Custom HTML Element**](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) *(web component)*, който предоставя интерактивна лента за изчисляване на месечни вноски за кредит. Компонентът автоматично формулира месечната вноска въз основа на имотната цена, годишната лихва и периода на плащане, както и дава възможност за директно препращане към формуляр за кандидатстване през CREDITERA.
+[![npm version][npm-version-src]][npm-version-href]
+[![License][license-src]][license-href]
 
-### Инсталиране
+## 🎯 Overview
 
-Свалете файла `creditera-bar.js` и го добавете в страницата си:
+`creditera-bar` is a [**Custom HTML Element**](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements) *(web component)* that provides an interactive bar for calculating monthly loan payments. The component automatically calculates the monthly payment based on property price, annual interest rate, and payment period, as well as providing direct redirection to an application form through [CREDITERA.BG](https://creditera.bg/).
+
+## 📦 Setup
+
+There are two ways of implementation:
+
+### 1. Node module installation
+
+#### npm
+
+```bash
+npm install @mevbg/creditera-bar
+```
+
+#### pnpm
+
+```bash
+pnpm add @mevbg/creditera-bar
+```
+
+#### yarn
+
+```bash
+yarn add @mevbg/creditera-bar
+```
+
+### 2. Manually
+
+Download the `creditera-bar.js` file and add it to your page:
+
 ```html
 <script src="./path/to/creditera-bar.js"></script>
 ```
 
-### Усвояване
+## ⚙️ Usage
 
-Конфигурирайте компонента чрез поддържаните аргументи и според съответния контекст, след което го поставете в страницата, където искате да се появи бара. Ето два примера:
+Configure the component through the supported arguments and according to the appropriate context, then place it on the page where you want the bar to appear. Here are two examples:
 
-#### Базов пример
+### Basic Example
+
 ```html
 <creditera-bar 
   price="200000" 
@@ -23,7 +54,8 @@
 </creditera-bar>
 ```
 
-#### Пълен пример с всички аргументи
+### Full Example with All Arguments
+
 ```html
 <creditera-bar 
   price="150000"
@@ -37,99 +69,118 @@
 </creditera-bar>
 ```
 
-### Аргументи
+## 📋 Arguments
 
-#### `price`
-- **Описание**: Цена на имота, в евро (€)
-- **Тип**: цяло число
-- **Задължителен**: ДА
-- **Стойност по подразбиране**: няма
-- **Пример**: `price="200000"`
+### `price`
 
-#### `redirect-url`
-- **Описание**: URL адрес към формуляр за кандидатстване за кредит
-- **Тип**: текст (URL)
-- **Задължителен**: ДА
-- **Стойност по подразбиране**: няма
-- **Пример**: `redirect-url="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c"`
+- **Description**: Property price in euros (€)
+- **Type**: integer
+- **Required**: YES
+- **Default value**: none
+- **Example**: `price="200000"`
 
-#### `max-period`
-- **Описание**: Горна граница на периода на кредита в години
-- **Тип**: цяло число
-- **Задължителен**: НЕ
-- **Стойност по подразбиране**: `30`
-- **Ограничения**: минимум 4, максимум 30
-- **Пример**: `years="25"`
+### `redirect-url`
 
-#### `interest`
-- **Описание**: Годишната лихвена ставка в проценти
-- **Тип**: число
-- **Задължителен**: НЕ
-- **Стойност по подразбиране**: `2.19`
-- **Пример**: `interest="2.5"`
+- **Description**: URL address to the loan application form
+- **Type**: text (URL)
+- **Required**: YES
+- **Default value**: none
+- **Example**: `redirect-url="https://creditera.app.finbryte.com/form/3d182075-e6be-4d48-9ac6-3af5ab3f8a2c"`
 
-#### `loan-cap-percent`
-- **Описание**: Максимален процент от цената на имота, който може да бъде отпуснат като кредит
-- **Тип**: число
-- **Задължителен**: НЕ
-- **Стойност по подразбиране**: `85`
-- **Ограничения**: максимум 85
-- **Пример**: `loan-cap-percent="80"`
+### `max-period`
 
-#### `background-color`
-- **Описание**: Цвят на фона на лентата
-- **Тип**: HEX цвят
-- **Задължителен**: НЕ
-- **Стойност по подразбиране**: `#E6E6E6`
-- **Пример**: `background-color="#F0F0F0"`
+- **Description**: Upper limit of the loan period in years
+- **Type**: integer
+- **Required**: NO
+- **Default value**: `30`
+- **Constraints**: minimum 4, maximum 30
+- **Example**: `years="25"`
 
-#### `primary-color`
-- **Описание**: Акцентен цвят (за сумата на месечната вноска и бутона)
-- **Тип**: HEX цвят
-- **Задължителен**: НЕ
-- **Стойност по подразбиране**: `#00AA33`
-- **Пример**: `primary-color="#0066CC"`
+### `interest`
 
-#### `alignment`
-- **Описание**: Подравняване на съдържанието в лентата
-- **Тип**: текст
-- **Задължителен**: НЕ
-- **Стойност по подразбиране**: `left`
-- **Възможни стойности**: `left`, `center`
-- **Пример**: `alignment="center"`
+- **Description**: Annual interest rate in percent
+- **Type**: number
+- **Required**: NO
+- **Default value**: `2.19`
+- **Example**: `interest="2.5"`
 
-### Функционалност
+### `loan-cap-percent`
 
-#### Автоматично изчисляване
-Компонентът автоматично изчислява месечната вноска по формулата за анюитетно погасяване на базата на определен процент от подадената цена (по подразбиране 85% или стойност подадена чрез `loan-cap-percent` атрибута, съгласно нормативното ограничение на БНБ, че сумата по ипотечния кредит не може да надхвърля 85% от пазарната цена на имота):
+- **Description**: Maximum percentage of the property price that can be granted as a loan
+- **Type**: number
+- **Required**: NO
+- **Default value**: `85`
+- **Constraints**: maximum 85
+- **Example**: `loan-cap-percent="80"`
 
-```
+### `background-color`
+
+- **Description**: Background color of the bar
+- **Type**: HEX color
+- **Required**: NO
+- **Default value**: `#E6E6E6`
+- **Example**: `background-color="#F0F0F0"`
+
+### `primary-color`
+
+- **Description**: Accent color (for monthly payment amount and button)
+- **Type**: HEX color
+- **Required**: NO
+- **Default value**: `#00AA33`
+- **Example**: `primary-color="#0066CC"`
+
+### `alignment`
+
+- **Description**: Content alignment within the bar
+- **Type**: text
+- **Required**: NO
+- **Default value**: `left`
+- **Possible values**: `left`, `center`
+- **Example**: `alignment="center"`
+
+## ⚡ Functionality
+
+### Automatic Calculation
+
+The component automatically calculates the monthly payment using the annuity repayment formula based on a certain percentage of the provided price (by default 85% or a value provided through the `loan-cap-percent` attribute, according to the regulatory restriction of the Bulgarian National Bank that the mortgage loan amount cannot exceed 85% of the property's market price):
+
+```text
 M = P × [r × (1 + r)^n] / [(1 + r)^n - 1]
 ```
 
-Където:
-- M = месечна вноска
-- P = сума на кредита *(loan-cap-percent от подадената цена)*
-- r = месечна лихвена ставка *(interest / 12 / 100)*
-- n = общ брой плащания *(years × 12)*
+Where:
 
-#### Интерактивност
-- Бутон **ЗАЯВИ**, който води до предоставения чрез `redirect-url` линк към формуляр за кандидатстване (автоматично добавя `years` и `amount` query аргументи);
-- Динамично обновяване на месечната вноска при промяна на годините.
+- M = monthly payment
+- P = loan amount *(loan-cap-percent of the provided price)*
+- r = monthly interest rate *(interest / 12 / 100)*
+- n = total number of payments *(years × 12)*
 
-#### Валидация
-- Аргументът `price` е задължителен и трябва да бъде валидно число;
-- Аргументът `redirect-url` е задължителен и трябва да бъде валиден URL адрес;
-- Аргументът `max-period` се ограничава между 4 години и предвидената горна граница (по подразбиране 30 години);
-- Аргументът `loan-cap-percent` се ограничава до максимум 85% (съгласно нормативните изисквания на БНБ);
-- Аргументът `alignment` приема само стойности `left` или `center`.
+### Interactivity
 
-### Техническа специфика
+- **APPLY** button that leads to the link provided through `redirect-url` to the application form (automatically adds `years` and `amount` query arguments);
+- Dynamic updating of the monthly payment when years are changed.
 
-- Съвместимост с модерни браузъри, които поддържат Web Components;
-- Не изисква допълнителни library/framework скриптове;
-- Автоматично се регистрира като `creditera-bar` HTML element, няма нужда от извикване на глобална функция/метод.
+### Validation
 
-### Поддръжка
+- The `price` argument is required and must be a valid number;
+- The `redirect-url` argument is required and must be a valid URL address;
+- The `max-period` argument is limited between 4 years and the provided upper limit (default 30 years);
+- The `loan-cap-percent` argument is limited to a maximum of 85% (according to the regulatory requirements of the Bulgarian National Bank);
+- The `alignment` argument accepts only `left` or `center` values.
 
-За въпроси и проблеми, свързани с уеб компонента, моля пишете на [Мартин Методиев](mailto:martin@metodiev.bg).
+## 🛠️ Technical Specifications
+
+- Compatible with modern browsers that support Web Components;
+- Does not require additional library/framework scripts;
+- Automatically registers as a `creditera-bar` HTML element, no need to call a global function/method.
+
+## 🤝🏻 Contributing
+
+This is a personal work and no contributions are expected.
+
+<!-- Badges -->
+
+[npm-version-src]: https://img.shields.io/npm/v/%40mevbg%2Fcreditera-bar/latest.svg?style=flat&colorA=020420&colorB=00DC82
+[npm-version-href]: https://npmjs.com/package/@mevbg/creditera-bar
+[license-src]: https://img.shields.io/npm/l/@mevbg/creditera-bar.svg?style=flat&colorA=020420&colorB=00DC82
+[license-href]: https://github.com/mevbg/creditera-bar/blob/main/LICENSE

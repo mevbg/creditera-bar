@@ -132,7 +132,7 @@ function processCss() {
   };
 }
 
-// Custom plugin to copy README.md file
+// Custom plugin to copy DOCUMENTATION.md file
 function copyReadme() {
   return {
     name: 'copy-readme',
@@ -140,19 +140,19 @@ function copyReadme() {
       const fs = require('fs');
       
       try {
-        // Read the README.md file
-        const readmeContent = fs.readFileSync('README.md', 'utf-8');
+        // Read the DOCUMENTATION.md file
+        const readmeContent = fs.readFileSync('DOCUMENTATION.md', 'utf-8');
         
-        // Add the README.md file to the bundle
+        // Add the DOCUMENTATION.md file to the bundle
         this.emitFile({
           type: 'asset',
-          fileName: 'README.md',
+          fileName: 'DOCUMENTATION.md',
           source: readmeContent
         });
         
-        console.log('✓ README.md copied to dist directory');
+        console.log('✓ DOCUMENTATION.md copied to dist directory');
       } catch (error) {
-        console.warn('⚠ Could not copy README.md:', error.message);
+        console.warn('⚠ Could not copy DOCUMENTATION.md:', error.message);
       }
     }
   };
