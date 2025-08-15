@@ -182,5 +182,5 @@ This is a personal work and no contributions are expected.
 
 [npm-version-src]: https://img.shields.io/npm/v/%40mevbg%2Fcreditera-bar/latest.svg?style=flat&colorA=020420&colorB=00DC82
 [npm-version-href]: https://npmjs.com/package/@mevbg/creditera-bar
-[license-src]: https://img.shields.io/npm/l/@mevbg/creditera-bar.svg?style=flat&colorA=020420&colorB=00DC82
+[license-src]: https://img.shields.io/npm/l/%40mevbg%2Fcreditera-bar.svg?style=flat&colorA=020420&colorB=00DC82
 [license-href]: https://github.com/mevbg/creditera-bar/blob/main/LICENSE
